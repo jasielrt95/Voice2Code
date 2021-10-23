@@ -3,8 +3,6 @@
 # Import the necessary libraries
 import speech_recognition as sr
 
-from voice2code import main
-
 
 class voice2text:
     def __init__(self):
@@ -51,7 +49,7 @@ class text2code:
         self.split_text = self.text.split()
         self.code = ""
         self.commands = {
-            "print": "print",
+            "print": "print (",
             "open parenthesis": "(",
             "close parenthesis": ")",
             "open parentheses": "(",
@@ -68,7 +66,11 @@ class text2code:
             "minus": "-",
             "multiply": "*",
             "divide": "/",
+            "true": "True",
+            "through": "True",
+            "two dots": ":",
         }
+        
 
     # This method, will translate the text to code using the commands dictionary
     def text_to_code(self):
@@ -97,8 +99,8 @@ class text2code:
             # # if the user input starts with string or a similar word it will handle the rest of the input as a string
             if (
                 self.split_text[1] == "string"
-                or self.split_text[0] == "stream"
-                or self.split_text[0] == "ring"
+                or self.split_text[1] == "stream"
+                or self.split_text[1] == "ring"
             ):
                 self.code += ' = "'
                 self.code += " ".join(self.split_text[2:])
@@ -108,18 +110,43 @@ class text2code:
                 self.code += "= "
                 self.code += " ".join(self.split_text[1:])
 
+        elif self.text == "while":
+            self.code += "while ("
+
+        elif self.text == "space":
+            self.code += "  "
+
+        elif self.text == "nextline" or self.text == "new line":
+            self.code += "\n"
+
         else:
             return
 
         # write the code to a file
-        with open("code2.py", "a") as file:
+        with open("code.py", "a") as file:
             file.write(self.code + " ")
 
 
+def header_generator(title, description=None):
+    if description == None:
+        print("*" * 50, title, "*" * 50)
+        print("*" * 40)
+    else:
+        print("*" * 60, title, "*" * 60)
+        print("\n" + description + "\n")
+        print("*" * 140)
+
+
 def main():
+    header_generator(
+        "Voice to Code", "This program will convert a voice command to a code"
+    )
     # keeps listening until the user says "stop"
     while True:
-        text = voice2text().voice_to_text()
+
+        translator = voice2text()
+        text = translator.voice_to_text()
+
         if text == "stop":
             break
         code = text2code(text).text_to_code()
