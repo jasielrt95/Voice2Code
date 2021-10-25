@@ -3,7 +3,7 @@
 # Import the necessary libraries
 import speech_recognition as sr
 
-
+# Using the speech recognition librarie we receive the voice data
 class voice2text:
     def __init__(self):
         self.voice = None
@@ -33,7 +33,8 @@ class voice2text:
                     # we let the user know what the API translated
                     print("You said: " + self.text)
                     break
-
+                #in case that the data is inaudible we use .UnknownValueError
+                #to let them know 
                 except sr.UnknownValueError:
                     print("Could not understand audio")
 
@@ -126,7 +127,7 @@ class text2code:
         with open("code.py", "a") as file:
             file.write(self.code + " ")
 
-
+# this function creates a simple header 
 def header_generator(title, description=None):
     if description == None:
         print("*" * 50, title, "*" * 50)
@@ -139,15 +140,16 @@ def header_generator(title, description=None):
 
 def main():
     header_generator(
-        "Voice to Code", "This program will convert a voice command to a code"
+        "Voice to Code", "This program will convert a voice command to a code\n\tTo exit say 'exit code'"
     )
-    # keeps listening until the user says "stop"
+    # keeps listening until the user says "exit code"
     while True:
-
+        #Taking the data from the voice input and storing it 
         translator = voice2text()
         text = translator.voice_to_text()
 
-        if text == "stop":
+        #While its still listening, if it detects the word "exit code" it will exit
+        if text == "exit code":
             break
         code = text2code(text).text_to_code()
 
