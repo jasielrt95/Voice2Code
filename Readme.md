@@ -19,7 +19,7 @@ To install theses:
 pip install SpeechRecognition
 pip install pyaudio
 ```
-- if pip fails to install pyaudio on windows use pipwin
+- if pip fails to install pyaudio on windows use pipwin ( remember to add the script folder of your Python installation to PATH)
 ```
 pip install pipwin
 pipwin install pyaudio
