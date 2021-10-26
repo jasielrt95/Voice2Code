@@ -72,7 +72,7 @@ class text2code:
             "multiplied by": "*",
             "times": "*",
             "divided": "/",
-            "divided": "/",
+            "divided by": "/",
             "true": "True",
             "through": "True",
             "two dots": ":",
