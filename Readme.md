@@ -56,8 +56,8 @@ To exit say 'close editor'
 ************************************************************************************************************************
 ```
 
-After that the microphone will start to receive input for one second 
-(1s) and listenig to the enviroment to cancel noise.
+After that, the microphone will start to receive input for one second 
+(1s) to normalize audio recording (for better results). * Do not talk during this second *
 
 Once the terminal displays: *"Listening..."*, you can talk to the 
 microphone.
@@ -66,7 +66,7 @@ microphone.
 > Listening ...
 ```
 
-After you hava spoken the input the terminal will show you what you 
+After you hava spoken, the terminal will show you what you 
 said (or what it understood) like this:
 
 *"variable x"*
@@ -84,7 +84,7 @@ again.
 
 The code will be in a .py file that will be generated automatically 
 
-Want an example of the code that Voice2code can generate say *"example"*
+If you want to see an example of the code that the script can generate say "example" 
 
 For a list of commands you can say *"help"*
 
