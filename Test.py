@@ -1,3 +1,8 @@
+''' Juan Hernandez - juan.hernandez41@upr.edu
+ The goal of this program is to convert a voice command to a code and
+    this file test cases to assure that the program is working properly.
+'''
+
 import unittest
 import text2code as t2c
 
