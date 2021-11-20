@@ -50,13 +50,16 @@ class text2code:
             The code that will be generated from the text
         """
         self.variables = variables
-        self.text = text
+        self.text = text.lower()
         self.clean_text()
         self.split_text = self.text.split()
         self.code = None
 
     def set_text(self, text):
-        self.text = text
+        self.text = text.lower()
+        self.clean_text()
+        self.split_text = self.text.split()
+
 
     def clean_text(self):
         """
@@ -74,7 +77,7 @@ class text2code:
             "greater than": ">",
             "less than": "<",
             "divided by": "/",
-            "modulo": "%",
+            "modulus": "%",
             "new line": "\n",
             "tab": "\t",
             "space": " ",
@@ -149,9 +152,13 @@ class text2code:
         code = "print("
         continue_string = False
         if self.split_text[1] == "string":
+            code += '"'
             for word in self.split_text[2:]:
                 code += word + " "
             return code[:-1] + '")\n'
+        elif self.split_text[1] == "expression":
+            code += " ".join(self.split_text[2:]) + ")\n" 
+            return code
         for word in self.split_text[1:]:
             # if the word is a variable, we print as a variable
             if word in self.variables:
@@ -292,7 +299,7 @@ class text2code:
                 self.code = self.if_handler()
 
             # Elif handler
-            elif self.split_text[0] == "ellis" and len(self.split_text) >= 2:
+            elif self.split_text[0] == "elif" and len(self.split_text) >= 2:
                 self.code = self.elif_handler()
 
             # Else handler
