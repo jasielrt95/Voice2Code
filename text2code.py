@@ -55,6 +55,9 @@ class text2code:
         self.split_text = self.text.split()
         self.code = None
 
+    def set_text(self, text):
+        self.text = text
+
     def clean_text(self):
         """
         Look for expresions like "plus", "times", "minus", etc. in the text and replace them with the correct code
@@ -78,6 +81,8 @@ class text2code:
             "next line": "\n",
             "nextline": "\n",
             "newline": "\n",
+            "true": "True",
+            "false": "False",
         }
 
         for symbol in symbols:
@@ -111,9 +116,7 @@ class text2code:
 
         # handle string values
         elif self.split_text[2] == "string":
-            code = (
-                self.split_text[1] + ' = "' + " ".join(self.split_text[3:]) + '"\n'
-            )
+            code = self.split_text[1] + ' = "' + " ".join(self.split_text[3:]) + '"\n'
             return code
 
         # handle dictionary creation
@@ -148,7 +151,7 @@ class text2code:
         if self.split_text[1] == "string":
             for word in self.split_text[2:]:
                 code += word + " "
-            return code[:-1] + "\")\n"
+            return code[:-1] + '")\n'
         for word in self.split_text[1:]:
             # if the word is a variable, we print as a variable
             if word in self.variables:
@@ -186,7 +189,7 @@ class text2code:
         elif len(self.split_text) > 2:
             for word in self.split_text[1:-1]:
                 code += word + " "
-            
+
         code += self.split_text[-1] + ": \n"
         return code
 
@@ -243,11 +246,31 @@ class text2code:
         code += self.split_text[-1] + ": \n"
         return code
 
+    def for_handler(self):
+        """
+        This method will handle the for command. It will be called when the users says a command that starts with "For". For example, "For i in range(10):" -> "for i in range(10):".
+        """
+        code = "for "
+
+        if self.split_text[1] == "range":
+            code += self.split_text[2] + " in range(" + self.split_text[3] + "): \n"
+            return code
+        elif self.split_text[1] == "list":
+            code += self.split_text[2] + " in " + self.split_text[3] + ": \n"
+            return code
+
     def new_line_handler(self):
         """
         This method will handle the new line command. It will be called when the users says a command that starts with "New line". For example, "New line" -> "\n".
         """
         code = "\n"
+        return code
+
+    def tab_handler(self):
+        """
+        This method will handle the tab command. It will be called when the users says a command that starts with "Tab". For example, "Tab" -> "\t".
+        """
+        code = "\t"
         return code
 
     def translate(self):
@@ -279,6 +302,11 @@ class text2code:
             # While handler
             elif self.split_text[0] == "while" and len(self.split_text) >= 2:
                 self.code = self.while_handler()
+
+            # For handler
+            elif self.split_text[0] == "for" and len(self.split_text) > 3:
+                self.code = self.for_handler()
+
             else:
                 self.code = ""
 

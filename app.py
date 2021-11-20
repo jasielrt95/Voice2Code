@@ -3,7 +3,9 @@ import text2code as t2c
 import voice2text as v2t
 
 
+
 def main():
+    print ("Welcome to Voice2Code")
     variables = []
     while True:
         file = open("./code.py", "a")

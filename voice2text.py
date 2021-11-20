@@ -3,6 +3,8 @@
 
 
 import speech_recognition as sr
+import json
+import googleapiclient
 
 
 class voice2text:
@@ -32,9 +34,9 @@ class voice2text:
         self.voice = None
         self.text = None
         self.recognizer = sr.Recognizer()
+        self.phrases = ["print", "if", "else", "elif", "define", "for", "while", "string", "list", "dictionary", ""]
 
     def translate(self):
-
         """
         This method will listen what the user says and translate it to text using the speech recognition library.
         """
@@ -52,8 +54,14 @@ class voice2text:
 
                 # This is an API call, it can fail, so we need to handle the exception
                 try:
-                    self.text = self.recognizer.recognize_google(
-                        self.voice
+                    # self.text = self.recognizer.recognize_google(
+                    #     self.voice, language="en-US"
+                    # )
+                    self.text = self.recognizer.recognize_google_cloud(
+                        self.voice,
+                        credentials_json=None,
+                        language="en-US",
+                        preferred_phrases=self.phrases
                     )
                     self.text = self.text.lower()
 
