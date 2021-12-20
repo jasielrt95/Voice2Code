@@ -50,7 +50,7 @@ class text2code:
             The code that will be generated from the text
         """
         self.variables = variables
-        self.text = text.lower()
+        self.text = text
         self.clean_text()
         self.split_text = self.text.split()
         self.code = None
@@ -59,7 +59,6 @@ class text2code:
         self.text = text.lower()
         self.clean_text()
         self.split_text = self.text.split()
-
 
     def clean_text(self):
         """
@@ -77,9 +76,10 @@ class text2code:
             "greater than": ">",
             "less than": "<",
             "divided by": "/",
-            "modulus": "%",
+            "modulo": "%",
+            "remainder": "%",
+            "reminder": "%",
             "new line": "\n",
-            "tab": "\t",
             "space": " ",
             "next line": "\n",
             "nextline": "\n",
@@ -156,9 +156,11 @@ class text2code:
             for word in self.split_text[2:]:
                 code += word + " "
             return code[:-1] + '")\n'
-        elif self.split_text[1] == "expression":
-            code += " ".join(self.split_text[2:]) + ")\n" 
+
+        elif self.split_text[1] == "variable":
+            code += " ".join(self.split_text[2:]) + ")\n"
             return code
+
         for word in self.split_text[1:]:
             # if the word is a variable, we print as a variable
             if word in self.variables:
@@ -190,14 +192,14 @@ class text2code:
         code = "if "
 
         if len(self.split_text) == 2:
-            code = "if " + self.split_text[1] + ": \n"
+            code = "if " + self.split_text[1] + ": \n\t"
             return code
 
         elif len(self.split_text) > 2:
             for word in self.split_text[1:-1]:
                 code += word + " "
 
-        code += self.split_text[-1] + ": \n"
+        code += self.split_text[-1] + ": \n\t"
         return code
 
     def elif_handler(self):
@@ -260,10 +262,10 @@ class text2code:
         code = "for "
 
         if self.split_text[1] == "range":
-            code += self.split_text[2] + " in range(" + self.split_text[3] + "): \n"
+            code += self.split_text[2] + " in range(" + self.split_text[3] + "): \n\t"
             return code
         elif self.split_text[1] == "list":
-            code += self.split_text[2] + " in " + self.split_text[3] + ": \n"
+            code += self.split_text[2] + " in " + self.split_text[3] + ": \n\t"
             return code
 
     def new_line_handler(self):
@@ -321,6 +323,9 @@ class text2code:
             # New line handler
             if self.text == "\n":
                 self.code = self.new_line_handler()
+            elif self.text == "tab" or self.text == "indent":
+                self.code = "\t"
+                return self.code
             else:
                 self.code = ""
 

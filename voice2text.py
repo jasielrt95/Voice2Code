@@ -34,7 +34,24 @@ class voice2text:
         self.voice = None
         self.text = None
         self.recognizer = sr.Recognizer()
-        self.phrases = ["print", "if", "else", "elif", "define", "for", "while", "string", "list", "dictionary", ""]
+        self.phrases = [
+            "print",
+            "if",
+            "else",
+            "elif",
+            "define",
+            "for",
+            "while",
+            "string",
+            "list",
+            "dictionary",
+            "tab",
+            "modulo",
+            "two",
+            "remainder",
+            "variable",
+            "run code",
+        ]
 
     def translate(self):
         """
@@ -61,7 +78,7 @@ class voice2text:
                         self.voice,
                         credentials_json=None,
                         language="en-US",
-                        preferred_phrases=self.phrases
+                        preferred_phrases=self.phrases,
                     )
                     self.text = self.text.lower()
 
