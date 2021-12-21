@@ -1,5 +1,0 @@
-file = open("code.py", "w")
-file.write("\t")
-file.write("\t")
-file.write("\t")
-file.write("hola")
